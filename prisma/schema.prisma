@@ -1,0 +1,105 @@
+// 한옥정원하우스 예약 시스템 — Prisma 스키마
+// 이번 단계 범위: 예약 캘린더 + 예약 DB (결제 연동 / 관리자 인증은 다음 단계)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// 숙소(현재는 독채 1개이지만 확장을 고려해 테이블로 분리)
+model Room {
+  id          String   @id @default(cuid())
+  name        String   @default("한옥정원하우스 독채")
+  description String?
+  /// 기본 숙박 가격(원). 실제 값은 운영자가 관리자 페이지(다음 단계)에서 설정합니다.
+  basePrice   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  reservations Reservation[]
+  blockedDates BlockedDate[]
+}
+
+/// 예약
+model Reservation {
+  id                 String              @id @default(cuid())
+  /// 예약자에게 안내하는 예약번호 (예: HG202609070001)
+  reservationNumber  String              @unique
+
+  roomId             String
+  room               Room                @relation(fields: [roomId], references: [id])
+
+  checkIn            DateTime            @db.Date
+  checkOut           DateTime            @db.Date
+
+  guestName          String
+  guestPhone         String
+  guestEmail         String?
+
+  adultCount         Int                 @default(2)
+  childCount         Int                 @default(0)
+  infantCount        Int                 @default(0)
+
+  basePrice          Int                 @default(0)
+  extraGuestPrice     Int                @default(0)
+  servicePrice        Int                @default(0)
+  discountPrice        Int              @default(0)
+  totalPrice          Int                @default(0)
+
+  paymentMethod       PaymentMethod
+  paymentStatus        PaymentStatus     @default(UNPAID)
+  reservationStatus     ReservationStatus @default(PENDING)
+  source               ReservationSource @default(WEBSITE)
+
+  memo                 String?
+
+  createdAt            DateTime          @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  @@index([roomId, checkIn, checkOut])
+  @@index([guestPhone])
+}
+
+/// 관리자가 수동으로 차단한 날짜 (예약 불가 처리)
+model BlockedDate {
+  id        String   @id @default(cuid())
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id])
+  date      DateTime @db.Date
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@unique([roomId, date])
+}
+
+enum PaymentMethod {
+  CARD
+  BANK_TRANSFER
+  ONSITE
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_WAIT
+  PAID
+  REFUNDED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum ReservationSource {
+  WEBSITE
+  NAVER
+  PHONE
+  WALK_IN
+  ETC
+}

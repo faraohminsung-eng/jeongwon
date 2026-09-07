@@ -1,3 +1,18 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# 환경변수 (절대 커밋하지 않음 — PG사 키, DB 접속정보 등)
+.env
+.env*.local
+
+# Prisma
+prisma/*.db
+
 # Design canvas의 seed 산출물 (Main.dc.html + canvas.json에서 재생성 가능)
 design/*-landing.html
 design/*.seeded.html
@@ -5,3 +20,5 @@ design/*.seeded.html
 # OS
 Thumbs.db
 .DS_Store
+
+/lib/generated/prisma
