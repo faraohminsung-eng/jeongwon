@@ -1,0 +1,7 @@
+# Design canvas의 seed 산출물 (Main.dc.html + canvas.json에서 재생성 가능)
+design/*-landing.html
+design/*.seeded.html
+
+# OS
+Thumbs.db
+.DS_Store
