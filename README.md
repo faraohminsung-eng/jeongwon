@@ -1,8 +1,8 @@
-# 한옥정원하우스 홈페이지 프로젝트
+# jeongwon
 
-순천 낙안읍성 인근 독채 한옥펜션 「한옥정원하우스」 예약 플랫폼.
+순천 낙안읍성 인근 독채 한옥펜션 「한옥정원하우스」 예약 플랫폼. (프로젝트 코드명: jeongwon — 사이트에 노출되는 브랜드명은 그대로 "한옥정원하우스"입니다)
 
-GitHub: https://github.com/faraohminsung-eng/hanok-garden-house
+GitHub: https://github.com/faraohminsung-eng/jeongwon
 
 기술 스택: **Next.js (App Router) + TypeScript + Prisma + PostgreSQL**
 

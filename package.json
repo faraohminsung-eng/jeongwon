@@ -1,5 +1,5 @@
 {
-  "name": "hanok-garden-house",
+  "name": "jeongwon",
   "version": "1.0.0",
   "description": "순천 낙안읍성 인근 독채 한옥펜션 「한옥정원하우스」 홈페이지 구축 프로젝트.",
   "main": "index.js",
@@ -13,16 +13,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/faraohminsung-eng/hanok-garden-house.git"
+    "url": "git+https://github.com/faraohminsung-eng/jeongwon.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/faraohminsung-eng/hanok-garden-house/issues"
+    "url": "https://github.com/faraohminsung-eng/jeongwon/issues"
   },
-  "homepage": "https://github.com/faraohminsung-eng/hanok-garden-house#readme",
+  "homepage": "https://github.com/faraohminsung-eng/jeongwon#readme",
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
