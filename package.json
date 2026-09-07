@@ -13,16 +13,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/faraoh77777/hanok-garden-house.git"
+    "url": "git+https://github.com/faraohminsung-eng/hanok-garden-house.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/faraoh77777/hanok-garden-house/issues"
+    "url": "https://github.com/faraohminsung-eng/hanok-garden-house/issues"
   },
-  "homepage": "https://github.com/faraoh77777/hanok-garden-house#readme",
+  "homepage": "https://github.com/faraohminsung-eng/hanok-garden-house#readme",
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",

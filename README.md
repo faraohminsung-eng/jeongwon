@@ -2,6 +2,8 @@
 
 순천 낙안읍성 인근 독채 한옥펜션 「한옥정원하우스」 예약 플랫폼.
 
+GitHub: https://github.com/faraohminsung-eng/hanok-garden-house
+
 기술 스택: **Next.js (App Router) + TypeScript + Prisma + PostgreSQL**
 
 ## 현재 상태 (2026-09-07)
