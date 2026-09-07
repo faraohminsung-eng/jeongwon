@@ -8,6 +8,8 @@ const LINKS = [
   { href: "/admin/reservations", label: "예약관리" },
   { href: "/admin/calendar", label: "예약 캘린더" },
   { href: "/admin/pricing", label: "가격관리" },
+  { href: "/admin/gallery", label: "사진관리" },
+  { href: "/admin/settings", label: "사이트 설정" },
 ];
 
 export default function AdminNav() {

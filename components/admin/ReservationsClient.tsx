@@ -91,6 +91,39 @@ export default function ReservationsClient({ role }: { role: string }) {
     }
   }
 
+  async function refund(id: string) {
+    setActingId(id);
+    try {
+      const preview = await fetch(`/api/admin/reservations/${id}/refund`).then((r) => r.json());
+      const input = prompt(
+        `환불 금액을 입력해주세요.\n체크인까지 ${preview.daysUntilCheckIn}일 남음 (환불 정책상 ${preview.refundRate}%)\n결제금액: ${preview.totalPrice?.toLocaleString()}원\n추천 환불액: ${preview.suggestedAmount?.toLocaleString()}원`,
+        String(preview.suggestedAmount ?? 0),
+      );
+      if (input === null) return;
+      const amount = Number(input);
+      if (!Number.isInteger(amount) || amount <= 0) {
+        alert("올바른 금액을 입력해주세요.");
+        return;
+      }
+      const reason = prompt("환불 사유 (선택)") ?? "";
+
+      const res = await fetch(`/api/admin/reservations/${id}/refund`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, reason }),
+      });
+      if (res.ok) {
+        alert("환불 처리되었습니다.");
+        await load();
+      } else {
+        const data = await res.json();
+        alert(data.message ?? "환불 처리에 실패했습니다.");
+      }
+    } finally {
+      setActingId(null);
+    }
+  }
+
   const totalPages = Math.max(1, Math.ceil(total / 20));
 
   return (
@@ -189,6 +222,11 @@ export default function ReservationsClient({ role }: { role: string }) {
                       {r.reservationStatus !== "CANCELLED" && r.reservationStatus !== "COMPLETED" && (
                         <button className="danger" disabled={actingId === r.id} onClick={() => act(r.id, "cancel")}>
                           취소
+                        </button>
+                      )}
+                      {r.paymentStatus === "PAID" && (
+                        <button disabled={actingId === r.id} onClick={() => refund(r.id)}>
+                          환불
                         </button>
                       )}
                     </div>

@@ -1,5 +1,4 @@
 // 한옥정원하우스 예약 시스템 — Prisma 스키마
-// 이번 단계 범위: 예약 캘린더 + 예약 DB + 관리자 페이지 (카드결제 PG 연동은 다음 단계)
 
 generator client {
   provider = "prisma-client"
@@ -22,6 +21,41 @@ model Room {
 
   reservations Reservation[]
   blockedDates BlockedDate[]
+}
+
+/// 사이트 전역 설정 (연락처, 계좌, 카카오채널, 지도 키, 환불정책 등). 항상 1행만 존재합니다.
+model SiteSetting {
+  id                String   @id @default("singleton")
+
+  phone             String?
+  address           String?
+  email             String?
+  kakaoChannelUrl   String?
+
+  kakaoMapAppKey    String?
+  naverMapClientId  String?
+
+  bankName          String?
+  bankAccountNumber String?
+  bankAccountHolder String?
+
+  /// [{ "daysBefore": 7, "refundRate": 100 }, ...] 형태. 체크인까지 남은 일수 기준 환불률(%).
+  refundPolicy      Json?
+
+  onsitePaymentEnabled Boolean @default(true)
+
+  updatedAt         DateTime @updatedAt
+}
+
+/// 갤러리 사진
+model GalleryImage {
+  id         String   @id @default(cuid())
+  category   String
+  url        String
+  storageKey String
+  sortOrder  Int      @default(0)
+  isCover    Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 /// 예약
@@ -60,8 +94,53 @@ model Reservation {
   createdAt            DateTime          @default(now())
   updatedAt             DateTime         @updatedAt
 
+  payments Payment[]
+  refunds  Refund[]
+
   @@index([roomId, checkIn, checkOut])
   @@index([guestPhone])
+}
+
+/// 카드결제(PG) 시도/승인 기록 — 삭제하지 않고 계속 추적합니다.
+model Payment {
+  id            String    @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+
+  provider      String    @default("TOSS")
+  paymentKey    String?   @unique
+  orderId       String
+  amount        Int
+
+  /// REQUESTED / APPROVED / FAILED / CANCELED
+  status        String    @default("REQUESTED")
+
+  approvedAt    DateTime?
+  cancelledAt   DateTime?
+  cancelAmount  Int?
+
+  /// PG사 응답 원본 (감사/디버깅용)
+  rawResponse   Json?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([reservationId])
+}
+
+/// 환불 처리 기록
+model Refund {
+  id            String   @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+
+  amount        Int
+  reason        String?
+  processedBy   String?
+
+  createdAt     DateTime @default(now())
+
+  @@index([reservationId])
 }
 
 /// 관리자가 수동으로 차단한 날짜 (예약 불가 처리)

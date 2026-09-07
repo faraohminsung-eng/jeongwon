@@ -12,8 +12,16 @@ import Travel from "@/components/sections/Travel";
 import Review from "@/components/sections/Review";
 import ReservationTeaser from "@/components/sections/ReservationTeaser";
 import Location from "@/components/sections/Location";
+import { getHomeData } from "@/lib/homeData";
 
-export default function HomePage() {
+// DB(사진/설정)를 조회하므로 빌드 시점이 아니라 요청 시점에 렌더링합니다.
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const { settings, images } = await getHomeData();
+  const mainCover = images.find((i) => i.category === "MAIN" && i.isCover) ?? images.find((i) => i.category === "MAIN");
+  const galleryImages = images.filter((i) => i.category !== "MAIN");
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -21,20 +29,20 @@ export default function HomePage() {
       </a>
       <SiteNav />
       <main id="main">
-        <Hero />
+        <Hero coverUrl={mainCover?.url} />
         <About />
         <TheHanok />
         <TheGarden />
         <Space />
         <Experience />
-        <Gallery />
+        <Gallery images={galleryImages} />
         <Travel />
         <Review />
         <ReservationTeaser />
-        <Location />
+        <Location settings={settings} />
       </main>
-      <SiteFooter />
-      <MobileBar />
+      <SiteFooter settings={settings} />
+      <MobileBar settings={settings} />
     </>
   );
 }

@@ -43,12 +43,33 @@ export default function ReservationClient() {
   const [guestName, setGuestName] = useState("");
   const [guestPhone, setGuestPhone] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"BANK_TRANSFER" | "ONSITE">("BANK_TRANSFER");
+  const [paymentMethod, setPaymentMethod] = useState<"BANK_TRANSFER" | "ONSITE" | "CARD">("BANK_TRANSFER");
   const [agreePrivacy, setAgreePrivacy] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [result, setResult] = useState<{ reservationNumber: string; totalPrice: number } | null>(null);
+
+  const [settings, setSettings] = useState<{
+    bankName: string | null;
+    bankAccountNumber: string | null;
+    bankAccountHolder: string | null;
+    onsitePaymentEnabled: boolean;
+  }>({ bankName: null, bankAccountNumber: null, bankAccountHolder: null, onsitePaymentEnabled: true });
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) =>
+        setSettings({
+          bankName: data.bankName,
+          bankAccountNumber: data.bankAccountNumber,
+          bankAccountHolder: data.bankAccountHolder,
+          onsitePaymentEnabled: data.onsitePaymentEnabled ?? true,
+        }),
+      )
+      .catch(() => {});
+  }, []);
 
   async function loadMonth(y: number, m: number) {
     setLoadingCal(true);
@@ -163,6 +184,11 @@ export default function ReservationClient() {
         }
         return;
       }
+      if (paymentMethod === "CARD") {
+        window.location.href = `/payment?reservationNumber=${encodeURIComponent(data.reservationNumber)}`;
+        return;
+      }
+
       setResult({ reservationNumber: data.reservationNumber, totalPrice: data.totalPrice });
       setStep("done");
     } catch {
@@ -190,7 +216,7 @@ export default function ReservationClient() {
           </div>
           <div className="res-summary-row">
             <span>결제방법</span>
-            <span>{paymentMethod === "BANK_TRANSFER" ? "계좌이체 (입금대기)" : "현장결제 (예약대기)"}</span>
+            <span>{paymentMethod === "BANK_TRANSFER" ? "계좌이체 (입금대기)" : paymentMethod === "ONSITE" ? "현장결제 (예약대기)" : "카드결제"}</span>
           </div>
           <div className="res-summary-row total">
             <span>예상 결제금액</span>
@@ -322,28 +348,58 @@ export default function ReservationClient() {
               <input
                 type="radio"
                 name="payment"
+                checked={paymentMethod === "CARD"}
+                onChange={() => setPaymentMethod("CARD")}
+              />
+              카드결제
+              <span className="pay-note">결제창에서 바로 승인</span>
+            </label>
+            <label className="pay-option">
+              <input
+                type="radio"
+                name="payment"
                 checked={paymentMethod === "BANK_TRANSFER"}
                 onChange={() => setPaymentMethod("BANK_TRANSFER")}
               />
               계좌이체
               <span className="pay-note">입금 확인 후 예약 확정</span>
             </label>
-            <label className="pay-option">
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentMethod === "ONSITE"}
-                onChange={() => setPaymentMethod("ONSITE")}
-              />
-              현장 현금결제
-              <span className="pay-note">운영자 승인 후 예약 확정</span>
-            </label>
-            <label className="pay-option disabled">
-              <input type="radio" name="payment" disabled />
-              카드결제
-              <span className="pay-note">준비 중 (PG 연동 예정)</span>
-            </label>
+            {settings.onsitePaymentEnabled && (
+              <label className="pay-option">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "ONSITE"}
+                  onChange={() => setPaymentMethod("ONSITE")}
+                />
+                현장 현금결제
+                <span className="pay-note">운영자 승인 후 예약 확정</span>
+              </label>
+            )}
           </div>
+
+          {paymentMethod === "BANK_TRANSFER" && (
+            <div className="res-summary">
+              {settings.bankName ? (
+                <>
+                  <div className="res-summary-row">
+                    <span>입금 은행</span>
+                    <span>{settings.bankName}</span>
+                  </div>
+                  <div className="res-summary-row">
+                    <span>계좌번호</span>
+                    <span>{settings.bankAccountNumber}</span>
+                  </div>
+                  <div className="res-summary-row">
+                    <span>예금주</span>
+                    <span>{settings.bankAccountHolder}</span>
+                  </div>
+                </>
+              ) : (
+                <p className="note">계좌 정보는 운영자 확인 후 별도 안내드립니다.</p>
+              )}
+            </div>
+          )}
 
           <label style={{ display: "flex", gap: 8, fontSize: 12, alignItems: "flex-start" }}>
             <input

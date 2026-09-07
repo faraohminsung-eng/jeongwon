@@ -22,3 +22,6 @@ Thumbs.db
 .DS_Store
 
 /lib/generated/prisma
+
+# 로컬 디스크 저장소 어댑터가 업로드한 사진 (S3 미설정 시). 실사진은 저장소에 커밋하지 않습니다.
+/data/uploads

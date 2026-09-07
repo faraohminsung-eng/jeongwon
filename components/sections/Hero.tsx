@@ -1,13 +1,16 @@
-export default function Hero() {
+export default function Hero({ coverUrl }: { coverUrl?: string | null }) {
   return (
     <section className="hero" id="hero">
-      <div
-        className="photo-ph hero-photo"
-        aria-label="사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)"
-      >
-        사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)
-      </div>
-      {/* TODO: 실사진 교체 시 위 div를 <Image src="..." alt="한옥정원하우스 외관과 정원" fill /> 로 교체 */}
+      {coverUrl ? (
+        <img src={coverUrl} alt="한옥정원하우스 외관과 정원" className="hero-photo" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      ) : (
+        <div
+          className="photo-ph hero-photo"
+          aria-label="사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)"
+        >
+          사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)
+        </div>
+      )}
       <div className="hero-overlay" />
       <div className="hero-content">
         <p className="eyebrow eyebrow-light">HANOK GARDEN HOUSE</p>

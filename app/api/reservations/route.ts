@@ -8,6 +8,7 @@ import {
   parseDateOnly,
   ReservationConflictError,
 } from "@/lib/reservation";
+import { getSiteSettings } from "@/lib/settings";
 
 const PHONE_RE = /^0\d{1,2}-?\d{3,4}-?\d{4}$/;
 
@@ -45,11 +46,14 @@ export async function POST(req: NextRequest) {
   if (paymentMethod !== "BANK_TRANSFER" && paymentMethod !== "ONSITE" && paymentMethod !== "CARD") {
     return NextResponse.json({ error: "INVALID_PAYMENT_METHOD" }, { status: 400 });
   }
-  if (paymentMethod === "CARD") {
-    return NextResponse.json(
-      { error: "CARD_NOT_READY", message: "카드 결제는 PG사 연동 완료 후 제공될 예정입니다. 계좌이체 또는 현장결제를 선택해주세요." },
-      { status: 400 },
-    );
+  if (paymentMethod === "ONSITE") {
+    const settings = await getSiteSettings();
+    if (!settings.onsitePaymentEnabled) {
+      return NextResponse.json(
+        { error: "ONSITE_DISABLED", message: "현재 현장결제 예약은 받고 있지 않습니다. 계좌이체 또는 카드결제를 이용해주세요." },
+        { status: 400 },
+      );
+    }
   }
   if (!agreePrivacy) {
     return NextResponse.json({ error: "PRIVACY_REQUIRED", message: "개인정보 수집 및 이용에 동의해주세요." }, { status: 400 });
