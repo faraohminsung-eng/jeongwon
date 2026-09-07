@@ -1,5 +1,5 @@
 // 한옥정원하우스 예약 시스템 — Prisma 스키마
-// 이번 단계 범위: 예약 캘린더 + 예약 DB (결제 연동 / 관리자 인증은 다음 단계)
+// 이번 단계 범위: 예약 캘린더 + 예약 DB + 관리자 페이지 (카드결제 PG 연동은 다음 단계)
 
 generator client {
   provider = "prisma-client"
@@ -102,4 +102,20 @@ enum ReservationSource {
   PHONE
   WALK_IN
   ETC
+}
+
+/// 관리자 계정
+model Admin {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  passwordHash String
+  role         AdminRole @default(MANAGER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  MANAGER
+  STAFF
 }
