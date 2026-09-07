@@ -29,3 +29,6 @@ Thumbs.db
 # Supabase CLI 로컬 캐시 (프로젝트 연결 정보 등, 실제 마이그레이션은 Prisma로 관리)
 /supabase/.temp
 .vercel
+
+.vercel
+.env*

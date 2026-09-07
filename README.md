@@ -3,10 +3,16 @@
 순천 낙안읍성 인근 독채 한옥펜션 「한옥정원하우스」 예약 플랫폼. (프로젝트 코드명: jeongwon — 사이트에 노출되는 브랜드명은 그대로 "한옥정원하우스"입니다)
 
 GitHub: https://github.com/faraohminsung-eng/jeongwon
+배포: https://jeongwon.vercel.app (Vercel + Supabase PostgreSQL, 서울 리전)
 
 기술 스택: **Next.js (App Router) + TypeScript + Prisma + PostgreSQL**
 
-## 현재 상태 (2026-09-07)
+## 현재 상태 (2026-09-08)
+
+- **실서비스 배포 완료**: Vercel(팀 `web`) + Supabase(프로젝트 `jeongwon`, ap-northeast-2)에 연결되어 실제로 동작 중
+  - Vercel 환경변수: `DATABASE_URL`(Supabase 세션 풀러), `AUTH_SECRET`, `ADMIN_SETUP_TOKEN`, `NEXT_PUBLIC_TOSS_CLIENT_KEY`, `TOSS_SECRET_KEY`
+  - `package.json`의 `postinstall`이 `prisma generate`를 자동 실행 (Vercel은 저장소에 없는 `lib/generated/prisma`를 빌드 시점에 새로 생성해야 함)
+  - Supabase 커넥션은 direct(`db.<ref>.supabase.co:5432`, IPv6 전용)가 아니라 세션 풀러(`aws-0-<region>.pooler.supabase.com:5432`)를 사용해야 함
 
 - **디자인 목업**: `design/Main.dc.html` — 게시된 캔버스: https://claude.ai/code/artifact/2c8be718-2406-4602-b06c-e2fb0c170747
 - **정적 프로토타입(참고용, 더 이상 사용 안 함)**: `static-prototype-reference/`
