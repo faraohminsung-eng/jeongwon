@@ -25,3 +25,7 @@ Thumbs.db
 
 # 로컬 디스크 저장소 어댑터가 업로드한 사진 (S3 미설정 시). 실사진은 저장소에 커밋하지 않습니다.
 /data/uploads
+
+# Supabase CLI 로컬 캐시 (프로젝트 연결 정보 등, 실제 마이그레이션은 Prisma로 관리)
+/supabase/.temp
+.vercel
