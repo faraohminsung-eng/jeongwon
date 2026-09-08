@@ -190,7 +190,7 @@ button.photo-ph { width: 100%; }
 /* ===== ABOUT ===== */
 .about-inner { display: flex; flex-direction: column; gap: 24px; }
 /* 모바일: 좌우 여백 없이 화면 끝까지 (1024px+에서 원래 좌우 배치로 복귀) */
-.about-photo { height: 320px; width: calc(100% + 48px); margin: 0 -24px; object-fit: cover; }
+.about-photo { height: 320px; width: calc(100% + 48px); max-width: none; margin: 0 -24px; object-fit: cover; }
 .about-text { display: flex; flex-direction: column; gap: 20px; }
 .about-text h2 { font-size: 22px; line-height: 1.6; }
 .note { font-size: 12px; line-height: 1.7; color: var(--color-wood-light); border-left: 2px solid var(--color-wood-pale); padding-left: 12px; }
@@ -235,7 +235,7 @@ button.photo-ph { width: 100%; }
 .travel-row { display: flex; flex-direction: column; gap: 24px; }
 .travel-feature { display: flex; flex-direction: column; gap: 8px; }
 /* 모바일: 대표 사진 좌우 여백 없이 (1024px+에서 원래 좌우 배치로 복귀) */
-.travel-feature .photo-ph, .travel-feature img { height: 280px; margin: 0 -24px 16px; width: calc(100% + 48px); object-fit: cover; }
+.travel-feature .photo-ph, .travel-feature img { height: 280px; margin: 0 -24px 16px; width: calc(100% + 48px); max-width: none; object-fit: cover; }
 .travel-tag { font-size: 11px; letter-spacing: 0.06em; color: var(--color-wood-light); }
 .travel-feature h3, .travel-card h3 { font-size: 17px; }
 .travel-desc { font-size: 13px; color: var(--color-wood-light); }
@@ -375,7 +375,7 @@ button.photo-ph { width: 100%; }
 
 @media (min-width: 768px) {
   .section-inner { padding: 96px 32px; }
-  .about-photo { width: calc(100% + 64px); margin: 0 -32px; height: 380px; }
+  .about-photo { width: calc(100% + 64px); max-width: none; margin: 0 -32px; height: 380px; }
   .hero-content h1 { font-size: 40px; }
   .hero-actions { flex-direction: row; max-width: none; }
   .hero-actions .btn { width: auto; }
@@ -389,7 +389,7 @@ button.photo-ph { width: 100%; }
   .mi.h-a { height: 160px; }
   .mi.h-b { height: 200px; }
   .mi.h-c { height: 240px; }
-  .travel-feature .photo-ph, .travel-feature img { width: calc(100% + 64px); margin: 0 -32px 16px; height: 320px; }
+  .travel-feature .photo-ph, .travel-feature img { width: calc(100% + 64px); max-width: none; margin: 0 -32px 16px; height: 320px; }
   .review-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; overflow-x: visible; margin: 0; padding: 0; }
   .review-card { flex: initial; }
   .info-map { height: 320px; }

@@ -21,7 +21,11 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const { settings, images } = await getHomeData();
 
-  const mainCover = pickByCategory(images, "MAIN", 0) ?? pickByCategory(images, "GARDEN", 0);
+  // 메인(히어로) 사진: 야경 사진을 우선 사용 (요청에 따라 교체)
+  const mainCover =
+    pickByCategory(images, "NIGHT", 0) ??
+    pickByCategory(images, "MAIN", 0) ??
+    pickByCategory(images, "GARDEN", 0);
   const galleryImages = images.filter((i) => i.category !== "MAIN");
 
   // 업로드된 실제 사진을 각 섹션의 실제 내용과 맞는 자리에 배치합니다.
