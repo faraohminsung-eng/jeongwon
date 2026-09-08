@@ -195,8 +195,9 @@ button.photo-ph { width: 100%; }
 .note { font-size: 12px; line-height: 1.7; color: var(--color-wood-light); border-left: 2px solid var(--color-wood-pale); padding-left: 12px; }
 
 /* ===== THE HANOK ===== */
-.hanok-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.hanok-grid .photo-ph, .hanok-grid img { height: 150px; width: 100%; object-fit: cover; }
+/* 모바일: 좌우 여백 없이 화면 끝까지 채우는 정사각형 2열 그리드 (768px+에서 원래 카드형으로 복귀) */
+.hanok-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; margin: 0 -24px; width: calc(100% + 48px); }
+.hanok-grid .photo-ph, .hanok-grid img { aspect-ratio: 1 / 1; height: auto; width: 100%; object-fit: cover; }
 
 /* ===== THE GARDEN ===== */
 .garden { position: relative; min-height: 420px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -206,8 +207,9 @@ button.photo-ph { width: 100%; }
 .garden-note { position: absolute; bottom: 16px; right: 16px; font-size: 10px; letter-spacing: 0.06em; color: rgba(247,243,234,0.7); }
 
 /* ===== SPACE ===== */
-.space-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.space-card { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px; height: 150px; justify-content: flex-end; text-align: left; color: var(--color-ivory); background: linear-gradient(150deg, #D9C9AC 0%, #8B6F52 100%); }
+/* 모바일: 가로 스와이프 카드, 사진 비율 4:3으로 통일 (768px+에서 그리드로 복귀) */
+.space-grid { display: flex; gap: 14px; overflow-x: auto; margin: 0 -24px; padding: 0 24px 4px; }
+.space-card { flex: 0 0 220px; aspect-ratio: 4 / 3; height: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px; justify-content: flex-end; text-align: left; color: var(--color-ivory); background: linear-gradient(150deg, #D9C9AC 0%, #8B6F52 100%); }
 .space-card.lb-dark { background: linear-gradient(150deg, #4A3A2C 0%, #2B2724 100%); }
 .space-card-title { font-size: 14px; font-weight: 600; }
 .space-card-desc { font-size: 11px; opacity: 0.85; }
@@ -222,11 +224,10 @@ button.photo-ph { width: 100%; }
 .gallery-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; max-width: 100%; }
 .gtab { flex: none; padding: 9px 18px; min-height: 40px; font-size: 12px; letter-spacing: 0.05em; border: 1px solid var(--color-wood-pale); color: var(--color-wood-light); background: transparent; border-radius: 2px; }
 .gtab.is-active { background: var(--color-wood); color: var(--color-ivory); border-color: var(--color-wood); }
-.masonry { column-count: 2; column-gap: 12px; }
-.mi { break-inside: avoid; margin-bottom: 12px; width: 100%; }
-.mi.h-a { height: 160px; }
-.mi.h-b { height: 200px; }
-.mi.h-c { height: 240px; }
+/* 모바일: 좌우 여백 없이, 비율 통일된 정사각형 2열 그리드 (768px+에서 마사너리로 복귀) */
+.masonry { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; margin: 0 -24px; width: calc(100% + 48px); }
+.mi { aspect-ratio: 1 / 1; height: auto; margin-bottom: 0; width: 100%; }
+.mi.h-a, .mi.h-b, .mi.h-c { height: auto; aspect-ratio: 1 / 1; }
 .mi.is-hidden { display: none; }
 
 /* ===== TRAVEL ===== */
@@ -374,11 +375,16 @@ button.photo-ph { width: 100%; }
   .hero-content h1 { font-size: 40px; }
   .hero-actions { flex-direction: row; max-width: none; }
   .hero-actions .btn { width: auto; }
-  .hanok-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-  .hanok-grid .photo-ph, .hanok-grid img { height: 220px; }
-  .space-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .hanok-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin: 0; width: 100%; }
+  .hanok-grid .photo-ph, .hanok-grid img { height: 220px; aspect-ratio: auto; }
+  .space-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; overflow-x: visible; margin: 0; padding: 0; }
+  .space-card { flex: initial; aspect-ratio: auto; height: 150px; }
   .experience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-  .masonry { column-count: 3; }
+  .masonry { display: block; column-count: 3; column-gap: 12px; margin: 0; width: 100%; }
+  .mi, .mi.h-a, .mi.h-b, .mi.h-c { aspect-ratio: auto; margin-bottom: 12px; }
+  .mi.h-a { height: 160px; }
+  .mi.h-b { height: 200px; }
+  .mi.h-c { height: 240px; }
   .review-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .info-map { height: 320px; }
   .form-grid { grid-template-columns: repeat(2, 1fr); }
