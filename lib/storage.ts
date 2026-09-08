@@ -80,11 +80,52 @@ class S3CompatibleStorage implements StorageAdapter {
   }
 }
 
+/**
+ * Supabase Storage — Supabase의 REST API로 직접 업로드/삭제합니다 (S3 호환 엔드포인트 대신
+ * 네이티브 Storage API 사용 — 서비스 role 키만 있으면 되고 별도 S3 액세스 키 발급이 필요 없습니다).
+ * 버킷은 public으로 만들어서 업로드된 파일이 바로 공개 URL로 보이도록 합니다.
+ */
+class SupabaseStorage implements StorageAdapter {
+  private baseUrl = process.env.SUPABASE_STORAGE_URL!.replace(/\/$/, "");
+  private serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  private bucket = process.env.SUPABASE_STORAGE_BUCKET || "gallery";
+
+  async upload(buffer: Buffer, filename: string, contentType: string): Promise<UploadResult> {
+    const key = `${randomUUID()}-${filename}`;
+    const res = await fetch(`${this.baseUrl}/storage/v1/object/${this.bucket}/${key}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.serviceKey}`,
+        apikey: this.serviceKey,
+        "Content-Type": contentType,
+      },
+      body: new Uint8Array(buffer),
+    });
+    if (!res.ok) {
+      throw new Error(`Supabase Storage upload failed: ${res.status} ${await res.text()}`);
+    }
+    return { url: `${this.baseUrl}/storage/v1/object/public/${this.bucket}/${key}`, key };
+  }
+
+  async delete(key: string): Promise<void> {
+    await fetch(`${this.baseUrl}/storage/v1/object/${this.bucket}/${key}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${this.serviceKey}`, apikey: this.serviceKey },
+    }).catch(() => {});
+  }
+}
+
 let cached: StorageAdapter | null = null;
 
 export function getStorage(): StorageAdapter {
   if (cached) return cached;
-  cached = process.env.S3_BUCKET ? new S3CompatibleStorage() : new LocalDiskStorage();
+  if (process.env.SUPABASE_STORAGE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    cached = new SupabaseStorage();
+  } else if (process.env.S3_BUCKET) {
+    cached = new S3CompatibleStorage();
+  } else {
+    cached = new LocalDiskStorage();
+  }
   return cached;
 }
 
