@@ -16,9 +16,19 @@ export default function Location({ settings }: { settings: Settings }) {
         <div className="info-map" style={{ overflow: "hidden" }}>
           {canShowMap ? (
             <KakaoMap appKey={kakaoMapAppKey!} address={address!} />
+          ) : address ? (
+            <iframe
+              src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
+              width="100%"
+              height="100%"
+              style={{ border: 0, display: "block" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="한옥정원하우스 위치 지도"
+            />
           ) : (
-            <div className="photo-ph" style={{ height: "100%" }} aria-label="지도 자리 — 카카오맵 연동 예정">
-              지도 자리 — 카카오맵 연동 예정
+            <div className="photo-ph" style={{ height: "100%" }} aria-label="지도 자리 — 주소 등록 후 표시됩니다">
+              지도 자리 — 주소 등록 후 표시됩니다
               <svg className="pin" width="30" height="36" viewBox="0 0 30 36" fill="none">
                 <path
                   d="M15 2C22 2 27 7.5 27 14.5C27 22.5 15 34 15 34C15 34 3 22.5 3 14.5C3 7.5 8 2 15 2Z"
