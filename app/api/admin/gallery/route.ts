@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
   const form = await req.formData();
   const file = form.get("file");
   const category = String(form.get("category") ?? "");
+  const isConcept = form.get("isConcept") === "true";
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "MISSING_FILE", message: "파일을 선택해주세요." }, { status: 400 });
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
   const count = await prisma.galleryImage.count({ where: { category } });
 
   const image = await prisma.galleryImage.create({
-    data: { category, url, storageKey: key, sortOrder: count },
+    data: { category, url, storageKey: key, sortOrder: count, isConcept },
   });
 
   return NextResponse.json({ image });

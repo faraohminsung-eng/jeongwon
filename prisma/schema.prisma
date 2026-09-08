@@ -55,6 +55,10 @@ model GalleryImage {
   storageKey String
   sortOrder  Int      @default(0)
   isCover    Boolean  @default(false)
+  /// 아직 실재하지 않는, 앞으로 조성될 공간의 미리보기(컨셉) 이미지인지 여부.
+  /// true면 갤러리에 "조성 예정" 배지와 함께만 노출하고, 히어로/공간 소개 등
+  /// "현재 있는 시설"을 나타내는 자리에는 자동으로 채우지 않습니다.
+  isConcept  Boolean  @default(false)
   createdAt  DateTime @default(now())
 }
 

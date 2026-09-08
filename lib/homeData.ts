@@ -28,7 +28,7 @@ export async function getHomeData() {
         onsitePaymentEnabled: true,
         refundPolicy: null,
       },
-      images: [] as { id: string; category: string; url: string; isCover: boolean }[],
+      images: [] as { id: string; category: string; url: string; isCover: boolean; isConcept: boolean }[],
       dbAvailable: false as const,
     };
   }

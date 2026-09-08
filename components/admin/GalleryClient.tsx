@@ -7,6 +7,7 @@ type GalleryImage = {
   category: string;
   url: string;
   isCover: boolean;
+  isConcept: boolean;
   sortOrder: number;
 };
 
@@ -16,6 +17,7 @@ export default function GalleryClient({ canWrite }: { canWrite: boolean }) {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("EXTERIOR");
+  const [isConcept, setIsConcept] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -43,6 +45,7 @@ export default function GalleryClient({ canWrite }: { canWrite: boolean }) {
       const form = new FormData();
       form.append("file", file);
       form.append("category", category);
+      form.append("isConcept", String(isConcept));
       const res = await fetch("/api/admin/gallery", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) {
@@ -63,6 +66,15 @@ export default function GalleryClient({ canWrite }: { canWrite: boolean }) {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isCover: !img.isCover }),
+    });
+    await load();
+  }
+
+  async function toggleConcept(img: GalleryImage) {
+    await fetch(`/api/admin/gallery/${img.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isConcept: !img.isConcept }),
     });
     await load();
   }
@@ -96,6 +108,10 @@ export default function GalleryClient({ canWrite }: { canWrite: boolean }) {
           <label className="form-field" style={{ flex: "none" }}>
             사진 파일
             <input type="file" accept="image/*" ref={fileInput} required />
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, marginBottom: 12 }}>
+            <input type="checkbox" checked={isConcept} onChange={(e) => setIsConcept(e.target.checked)} />
+            조성 예정(아직 없는 공간의 미리보기 이미지)
           </label>
           <button type="submit" className="btn btn-primary" disabled={uploading}>
             {uploading ? "업로드 중..." : "업로드"}
@@ -135,6 +151,20 @@ export default function GalleryClient({ canWrite }: { canWrite: boolean }) {
                             }}
                           >
                             {img.isCover ? "대표사진" : "대표로 지정"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleConcept(img)}
+                            style={{
+                              fontSize: 11,
+                              padding: "4px 8px",
+                              border: "1px solid var(--line)",
+                              borderRadius: 2,
+                              background: img.isConcept ? "#7a5230" : "#fff",
+                              color: img.isConcept ? "var(--color-ivory)" : "var(--color-ink)",
+                            }}
+                          >
+                            {img.isConcept ? "조성 예정 표시중" : "조성 예정으로 표시"}
                           </button>
                           <button
                             type="button"

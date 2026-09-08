@@ -26,7 +26,7 @@ const PLACEHOLDER_PHOTOS = [
   { cat: "around", h: "h-a" },
 ];
 
-type GalleryImage = { id: string; category: string; url: string };
+type GalleryImage = { id: string; category: string; url: string; isConcept?: boolean };
 
 export default function Gallery({ images = [] }: { images?: GalleryImage[] }) {
   const [filter, setFilter] = useState("all");
@@ -64,13 +64,34 @@ export default function Gallery({ images = [] }: { images?: GalleryImage[] }) {
             {images.map((img, i) => {
               const hidden = filter !== "all" && filter !== img.category;
               return (
-                <img
+                <div
                   key={img.id}
-                  src={img.url}
-                  alt=""
                   className={`mi h-${["a", "b", "c"][i % 3]}${hidden ? " is-hidden" : ""}`}
-                  style={{ objectFit: "cover", borderRadius: 2 }}
-                />
+                  style={{ position: "relative" }}
+                >
+                  <img
+                    src={img.url}
+                    alt=""
+                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 2, display: "block" }}
+                  />
+                  {img.isConcept && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 8,
+                        left: 8,
+                        padding: "4px 10px",
+                        fontSize: 11,
+                        letterSpacing: "0.04em",
+                        background: "rgba(43,39,36,0.75)",
+                        color: "var(--color-ivory)",
+                        borderRadius: 999,
+                      }}
+                    >
+                      조성 예정 (이미지 시안)
+                    </span>
+                  )}
+                </div>
               );
             })}
           </div>

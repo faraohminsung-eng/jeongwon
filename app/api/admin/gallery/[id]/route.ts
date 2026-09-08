@@ -23,6 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const data: Record<string, unknown> = {};
   if (typeof body.sortOrder === "number") data.sortOrder = body.sortOrder;
   if (typeof body.isCover === "boolean") data.isCover = body.isCover;
+  if (typeof body.isConcept === "boolean") data.isConcept = body.isConcept;
 
   const image = await prisma.galleryImage.update({ where: { id }, data });
   return NextResponse.json({ image });
