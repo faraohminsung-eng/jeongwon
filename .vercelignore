@@ -1,0 +1,7 @@
+.env
+.env.local
+.env*.local
+data/uploads
+static-prototype-reference
+design
+supabase/.temp
