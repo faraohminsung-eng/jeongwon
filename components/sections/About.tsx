@@ -1,10 +1,14 @@
-export default function About() {
+export default function About({ photoUrl }: { photoUrl?: string }) {
   return (
     <section className="about" id="about">
       <div className="section-inner about-inner">
-        <div className="photo-ph about-photo" aria-label="사진 자리 — 한옥 마당 전경">
-          사진 자리 — 한옥 마당 전경
-        </div>
+        {photoUrl ? (
+          <img src={photoUrl} alt="한옥 마당 전경" className="about-photo" />
+        ) : (
+          <div className="photo-ph about-photo" aria-label="사진 자리 — 한옥 마당 전경">
+            사진 자리 — 한옥 마당 전경
+          </div>
+        )}
         <div className="about-text">
           <p className="eyebrow">ABOUT HANOK GARDEN HOUSE</p>
           <h2 className="serif">

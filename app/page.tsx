@@ -50,7 +50,7 @@ export default async function HomePage() {
       <SiteNav />
       <main id="main">
         <Hero coverUrl={mainCover} />
-        <About />
+        <About photoUrl={pickByCategory(images, "GARDEN", 3)} />
         <TheHanok photoUrls={hanokPhotoUrls} />
         <TheGarden photoUrl={pickByCategory(images, "GARDEN", 1)} />
         <Space photos={spacePhotos} />

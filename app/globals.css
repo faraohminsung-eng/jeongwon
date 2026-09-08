@@ -188,8 +188,9 @@ button.photo-ph { width: 100%; }
 .scroll-cue { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: rgba(247,243,234,0.85); display: none; }
 
 /* ===== ABOUT ===== */
-.about-inner { display: flex; flex-direction: column; gap: 32px; }
-.about-photo { height: 260px; }
+.about-inner { display: flex; flex-direction: column; gap: 24px; }
+/* 모바일: 좌우 여백 없이 화면 끝까지 (1024px+에서 원래 좌우 배치로 복귀) */
+.about-photo { height: 320px; width: calc(100% + 48px); margin: 0 -24px; object-fit: cover; }
 .about-text { display: flex; flex-direction: column; gap: 20px; }
 .about-text h2 { font-size: 22px; line-height: 1.6; }
 .note { font-size: 12px; line-height: 1.7; color: var(--color-wood-light); border-left: 2px solid var(--color-wood-pale); padding-left: 12px; }
@@ -372,6 +373,7 @@ button.photo-ph { width: 100%; }
 
 @media (min-width: 768px) {
   .section-inner { padding: 96px 32px; }
+  .about-photo { width: calc(100% + 64px); margin: 0 -32px; height: 380px; }
   .hero-content h1 { font-size: 40px; }
   .hero-actions { flex-direction: row; max-width: none; }
   .hero-actions .btn { width: auto; }
@@ -404,7 +406,7 @@ button.photo-ph { width: 100%; }
   .scroll-cue { display: block; }
   .about-inner { flex-direction: row; align-items: center; gap: 72px; }
   .about-photo, .about-text { flex: 1; }
-  .about-photo { height: 440px; }
+  .about-photo { height: 440px; width: auto; margin: 0; }
   .about-text h2 { font-size: 30px; }
   .hanok-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
   .hanok-grid .photo-ph, .hanok-grid img { height: 280px; }
