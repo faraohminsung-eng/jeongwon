@@ -1,16 +1,18 @@
 export default function Hero({ coverUrl }: { coverUrl?: string | null }) {
   return (
     <section className="hero" id="hero">
-      {coverUrl ? (
-        <img src={coverUrl} alt="한옥정원하우스 외관과 정원" className="hero-photo" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-      ) : (
-        <div
-          className="photo-ph hero-photo"
-          aria-label="사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)"
-        >
-          사진 자리 — 한옥 외관 · 정원 전경 (실사진 교체 예정)
-        </div>
-      )}
+      <video
+        className="hero-photo"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster={coverUrl ?? undefined}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      >
+        <source src="/videos/hero-night.mp4" type="video/mp4" />
+      </video>
       <div className="hero-overlay" />
       <div className="hero-content">
         <p className="eyebrow eyebrow-light">HANOK GARDEN HOUSE</p>
