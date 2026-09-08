@@ -177,7 +177,8 @@ button.photo-ph { width: 100%; }
 
 /* ===== HERO ===== */
 .hero { position: relative; min-height: 640px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; text-align: center; }
-.hero-photo { position: absolute; inset: 0; border-radius: 0; font-size: 11px; padding: 0 40px; }
+.hero-photo { position: absolute; inset: 0; border-radius: 0; }
+.photo-ph.hero-photo { font-size: 11px; padding: 0 40px; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,39,36,0.12) 0%, rgba(43,39,36,0.6) 100%); }
 .hero-content { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; color: var(--color-ivory); padding: 0 20px 72px; }
 .hero-content .eyebrow-light { letter-spacing: 0.4em; }
