@@ -13,14 +13,34 @@ import Review from "@/components/sections/Review";
 import ReservationTeaser from "@/components/sections/ReservationTeaser";
 import Location from "@/components/sections/Location";
 import { getHomeData } from "@/lib/homeData";
+import { pickByCategory } from "@/lib/galleryHelpers";
 
 // DB(사진/설정)를 조회하므로 빌드 시점이 아니라 요청 시점에 렌더링합니다.
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const { settings, images } = await getHomeData();
-  const mainCover = images.find((i) => i.category === "MAIN" && i.isCover) ?? images.find((i) => i.category === "MAIN");
+
+  const mainCover = pickByCategory(images, "MAIN", 0) ?? pickByCategory(images, "GARDEN", 0);
   const galleryImages = images.filter((i) => i.category !== "MAIN");
+
+  // 업로드된 실제 사진을 각 섹션의 실제 내용과 맞는 자리에 배치합니다.
+  // (관련 없는 카테고리 사진을 억지로 채워 넣지 않고, 실제로 어울리는 사진이 있을 때만 사용)
+  const hanokPhotoUrls = [
+    pickByCategory(images, "GARDEN", 2), // 한옥 외관
+    pickByCategory(images, "GARDEN", 1), // 처마
+    pickByCategory(images, "EXTERIOR", 0), // 대문
+    pickByCategory(images, "GARDEN", 3), // 마당
+    pickByCategory(images, "ROOM", 2), // 대청
+    pickByCategory(images, "NIGHT", 0), // 야간 모습
+  ];
+
+  const spacePhotos = {
+    living: pickByCategory(images, "ROOM", 2),
+    bed1: pickByCategory(images, "ROOM", 0),
+    garden: pickByCategory(images, "GARDEN", 0),
+    bbq: pickByCategory(images, "BBQ", 1) ?? pickByCategory(images, "BBQ", 0),
+  };
 
   return (
     <>
@@ -29,14 +49,14 @@ export default async function HomePage() {
       </a>
       <SiteNav />
       <main id="main">
-        <Hero coverUrl={mainCover?.url} />
+        <Hero coverUrl={mainCover} />
         <About />
-        <TheHanok />
-        <TheGarden />
-        <Space />
+        <TheHanok photoUrls={hanokPhotoUrls} />
+        <TheGarden photoUrl={pickByCategory(images, "GARDEN", 1)} />
+        <Space photos={spacePhotos} />
         <Experience />
         <Gallery images={galleryImages} />
-        <Travel />
+        <Travel naganeupseongPhotoUrl={pickByCategory(images, "TRAVEL", 0)} />
         <Review />
         <ReservationTeaser />
         <Location settings={settings} />

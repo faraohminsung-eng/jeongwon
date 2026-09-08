@@ -196,7 +196,7 @@ button.photo-ph { width: 100%; }
 
 /* ===== THE HANOK ===== */
 .hanok-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.hanok-grid .photo-ph { height: 150px; }
+.hanok-grid .photo-ph, .hanok-grid img { height: 150px; width: 100%; object-fit: cover; }
 
 /* ===== THE GARDEN ===== */
 .garden { position: relative; min-height: 420px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -232,14 +232,14 @@ button.photo-ph { width: 100%; }
 /* ===== TRAVEL ===== */
 .travel-row { display: flex; flex-direction: column; gap: 24px; }
 .travel-feature { display: flex; flex-direction: column; gap: 8px; }
-.travel-feature .photo-ph { height: 220px; margin-bottom: 8px; }
+.travel-feature .photo-ph, .travel-feature img { height: 220px; margin-bottom: 8px; width: 100%; object-fit: cover; }
 .travel-tag { font-size: 11px; letter-spacing: 0.06em; color: var(--color-wood-light); }
 .travel-feature h3, .travel-card h3 { font-size: 17px; }
 .travel-desc { font-size: 13px; color: var(--color-wood-light); }
 .travel-time { font-size: 11px; color: var(--color-wood-pale); }
 .travel-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
 .travel-card { display: flex; flex-direction: column; gap: 8px; }
-.travel-card .photo-ph { height: 120px; }
+.travel-card .photo-ph, .travel-card img { height: 120px; width: 100%; object-fit: cover; }
 
 /* ===== REVIEW ===== */
 .review-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -375,7 +375,7 @@ button.photo-ph { width: 100%; }
   .hero-actions { flex-direction: row; max-width: none; }
   .hero-actions .btn { width: auto; }
   .hanok-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-  .hanok-grid .photo-ph { height: 220px; }
+  .hanok-grid .photo-ph, .hanok-grid img { height: 220px; }
   .space-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .experience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .masonry { column-count: 3; }
@@ -401,7 +401,7 @@ button.photo-ph { width: 100%; }
   .about-photo { height: 440px; }
   .about-text h2 { font-size: 30px; }
   .hanok-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
-  .hanok-grid .photo-ph { height: 280px; }
+  .hanok-grid .photo-ph, .hanok-grid img { height: 280px; }
   .hanok-grid button:nth-child(4), .hanok-grid button:nth-child(5), .hanok-grid button:nth-child(6) { height: 240px; }
   .garden { min-height: 600px; }
   .garden-content h2 { font-size: 34px; }

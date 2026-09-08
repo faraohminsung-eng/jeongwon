@@ -1,6 +1,6 @@
 const PLACES = ["순천만국가정원", "순천만습지", "송광사", "선암사"];
 
-export default function Travel() {
+export default function Travel({ naganeupseongPhotoUrl }: { naganeupseongPhotoUrl?: string }) {
   return (
     <section className="travel alt-bg" id="travel">
       <div className="section-inner">
@@ -10,9 +10,13 @@ export default function Travel() {
         </div>
         <div className="travel-row">
           <article className="travel-feature">
-            <div className="photo-ph lb-dark" aria-label="사진 자리 — 낙안읍성">
-              사진 자리 — 낙안읍성
-            </div>
+            {naganeupseongPhotoUrl ? (
+              <img src={naganeupseongPhotoUrl} alt="낙안읍성" />
+            ) : (
+              <div className="photo-ph lb-dark" aria-label="사진 자리 — 낙안읍성">
+                사진 자리 — 낙안읍성
+              </div>
+            )}
             <p className="travel-tag">대표 관광지</p>
             <h3 className="serif">낙안읍성</h3>
             <p className="travel-desc">조선시대 읍성이 원형 그대로 남아있는 순천의 대표 관광지</p>

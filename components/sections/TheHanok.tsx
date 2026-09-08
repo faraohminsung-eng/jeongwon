@@ -1,6 +1,6 @@
 const PHOTOS = ["한옥 외관", "처마", "대문", "마당", "대청", "야간 모습"];
 
-export default function TheHanok() {
+export default function TheHanok({ photoUrls = [] }: { photoUrls?: (string | undefined)[] }) {
   return (
     <section className="hanok alt-bg" id="hanok">
       <div className="section-inner">
@@ -13,15 +13,19 @@ export default function TheHanok() {
           </h2>
         </div>
         <div className="hanok-grid">
-          {PHOTOS.map((label, i) => (
-            <div
-              key={label}
-              className={`photo-ph${i === 5 ? " lb-dark" : ""}`}
-              aria-label={`사진 자리 — ${label}`}
-            >
-              {label}
-            </div>
-          ))}
+          {PHOTOS.map((label, i) => {
+            const url = photoUrls[i];
+            if (url) {
+              return (
+                <img key={label} src={url} alt={label} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 2 }} />
+              );
+            }
+            return (
+              <div key={label} className={`photo-ph${i === 5 ? " lb-dark" : ""}`} aria-label={`사진 자리 — ${label}`}>
+                {label}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
